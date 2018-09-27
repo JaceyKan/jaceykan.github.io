@@ -1,8 +1,8 @@
 
-<div align="center"> <img src="http://jaceykan.github.io/img/JaceyBlog.jpg" width="600"/> </div><br>
+<!--<div align="center"> <img src="http://jaceykan.github.io/img/JaceyBlog.jpg" width="600"/> </div><br>-->
 
 
-![](https://raw.githubusercontent.com/jaceykan/jaceykan.github.io/master/img/readme-home.png)
+![](https://raw.githubusercontent.com/jaceykan/jaceykan.github.io/master/img/JaceyBlog.jpg)
 
 [![Build Status](https://travis-ci.org/jaceykan/jaceykan.github.io.svg?branch=master)](https://travis-ci.org/jaceykan/jaceykan.github.io)
 [![codebeat badge](https://codebeat.co/badges/5f031df3-f6c1-4ec0-911a-ff6617ca50b9)](https://codebeat.co/projects/github-com-jaceykan-jaceykan-github-io-master)
