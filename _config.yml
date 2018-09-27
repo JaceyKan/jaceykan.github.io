@@ -62,19 +62,18 @@ input: GFM                            # use Github Flavored Markdown !important
 # Gitalk
 gitalk:
   enable: true    #是否开启Gitalk评论
-  clientID: f2c84e7629bb1446c1a4                            #生成的clientID
-  clientSecret: ca6d6139d1e1b8c43f8b2e19492ddcac8b322d0d    #生成的clientSecret
+  clientID: 612a488af17b5f91e4f0                            #生成的clientID
+  clientSecret: 0555a83b6a4c72e2a3c686de2e873661848a08a6    #生成的clientSecret
   repo: jaceykan.github.io    #仓库名称
-  owner: jaceykan    #github用户名
-  admin: jaceykan
+  owner: JaceyKan    #github用户名
+  admin: JaceyKan
   distractionFreeMode: true #是否启用类似FB的阴影遮罩
 
 
 # 统计
-
 # Analytics settings
 # Baidu Analytics
-#ba_track_id: b50bf2b12b5338a1845e33832976fd68
+ba_track_id: 68a334a5d0a4ed82c6b9d616dfd40b61
 
 # Google Analytics
 #ga_track_id: 'UA-90855596-1'            # Format: UA-xxxxxx-xx
@@ -97,4 +96,9 @@ service-worker: true
 
 
 # Friends
-
+friends: [
+    {
+        title: "Github slucx",
+        href: "https://github.com/slucx"
+    }
+]
