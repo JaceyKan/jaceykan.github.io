@@ -42,6 +42,7 @@ anchorjs: true                          # if you want to customize anchor. check
 #gems: [jekyll-paginate]
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 
 
 
