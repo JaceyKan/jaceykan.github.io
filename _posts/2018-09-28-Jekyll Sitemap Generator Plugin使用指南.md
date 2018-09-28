@@ -53,7 +53,7 @@ plugins:
 ```
 jekyll serve
 ```
-![](https://jaceykan.github.io/img/20180927ruby-jekyll-install05.jpg)
+![](https://jaceykan.github.io/img/20180927ruby-jekyll-install05.png)
 
 在站点的 `_site` 文件夹下生成 [`sitemap.xml`](https://jaceykan.github.io/sitemap.xml) 文件
 
