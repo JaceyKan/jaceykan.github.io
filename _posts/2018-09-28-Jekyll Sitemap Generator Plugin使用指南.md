@@ -1,3 +1,65 @@
+---
+layout: post
+title: Jekyll Sitemap Generator Plugin使用指南
+subtitle: 生活中总有黑暗笼罩的时刻，永远不要放弃自己
+date: 2018-09-28
+author: JaceyKan
+header-img: img/post-bg-2015.jpg
+catalog: true
+tags: 
+ - Blog
+ - jekyll
+ - sitemap
+---
+
+### 参考文章：
+> * [sitemap百度百科](https://baike.baidu.com/item/sitemap)
+> * [jekyll-sitemap](https://github.com/jekyll/jekyll-sitemap)
+> * [jekyll插件的用法](https://jekyllrb.com/docs/plugins/installation/)
+> * [Jekyll Sitemap.xml](https://szhshp.org/tech/2016/03/25/sitemapforjekyll.html)
+
+
+### `sitemap` 网页地图 
+**形式**: XML，html，建站工具 
+
+Sitemap 方便网站管理员通知搜索引擎他们网站上有哪些可供抓取的网页。
+在其中列出网站中的网址以及关于每个网址的其他元数据（上次更新的时间、更改的频率以及相对于网站上其他网址的重要程度为何等），以便搜索引擎可以更加智能地抓取网站。
+
+
+### `jekyll-sitemap`
+jekyll的站点地图生成插件
+
+### `jekyll-sitemap`用法
+
+#### 1.安装 `jekyll-sitemap`
+打开Start Command Prompt with Ruby
+![](https://jaceykan.github.io/img/20180927ruby-jekyll-install.jpg)
+
+在命令行下输入
+```
+gem install jekyll-sitemap
+```
+![](https://jaceykan.github.io/img/20180928-01.png)
+
+### 2.进入对应的站点目录下，修改站点的 `_config.yml` 文件
+```
+url: "http://example.com" # the base hostname & protocol for your site
+plugins:
+  - jekyll-sitemap
+```
+![](https://jaceykan.github.io/img/20180928-02.png)
+
+### 3.运行站点
+```
+jekyll serve
+```
+![](https://jaceykan.github.io/img/20180927ruby-jekyll-install05.jpg)
+
+在站点的 `_site` 文件夹下生成 [`sitemap.xml`](https://jaceykan.github.io/sitemap.xml) 文件
+
+![](https://jaceykan.github.io/img/20180928-03.png)
+
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
@@ -45,3 +107,4 @@
 <loc>http://localhost:4000/tags/</loc>
 </url>
 </urlset>
+```
