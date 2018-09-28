@@ -1,7 +1,7 @@
 username = "jaceykan" # GitHub 用户名
 new_token = "fee15b8168daf36b7457e804628b2126baec81fd"  # GitHub Token
 repo_name = "jaceykan.gituhb.io" # 存放 issues
-sitemap_url = "https://draveness.me/sitemap.xml" # sitemap
+sitemap_url = "https://jaceykan.github.io/sitemap.xml" # sitemap
 kind = "Gitalk" # "Gitalk" or "gitment"
 
 require 'open-uri'
