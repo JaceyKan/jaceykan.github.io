@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Jekyll Sitemap Generator Plugin使用指南
-subtitle: 生活中总有黑暗笼罩的时刻，永远不要放弃自己
+subtitle: jekyll站点地图生成器
 date: 2018-09-28
 author: JaceyKan
 header-img: img/post-bg-2015.jpg
