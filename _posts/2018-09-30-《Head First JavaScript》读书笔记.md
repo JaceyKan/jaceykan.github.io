@@ -110,13 +110,13 @@ console.log(result);
 var innerFunction = whereAreYou();
 ```
 这条语句执行完毕后， 我们就有了变量innerFunction， 它指向whereAreYou返回的函数（ 及其环境）。
-![](img/20180930-01.png)
+![](https://github.com/JaceyKan/jaceykan.github.io/blob/master/img/20180930-01.png)
 
 ```
 var result = innerFunction();
 ```
 调用innerFunction。 这将在相应的环境中执行它指向的函数的代码
-![](img/20180930-02.png)
+![](https://github.com/JaceyKan/jaceykan.github.io/blob/master/img/20180930-02.png)
 
 每个嵌套函数都有自己的小环境，其中包含它自己的变量。这样将形成一个环境链，从内到外依次为各个嵌套函数的环境。
 
