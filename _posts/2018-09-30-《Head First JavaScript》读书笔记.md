@@ -4,7 +4,7 @@ title: 《Head First JavaScript》读书笔记
 subtitle: 
 date: 2018-09-30
 author: JaceyKan
-header-img: img/post-bg-2015.jpg
+header-img: img/bg-gubaidu.jpg
 catalog: true
 tags: 
  - ReadingNotes
@@ -526,3 +526,409 @@ for(var i=0; i < n; i++) {
 
 
 # Chapter13 使用原型
+JavaScript没有传统的面向对象模型，即从类创建对象的模型。   
+事实上，JavaScript根本就没有类。  
+在JavaScript中，对象从其他对象那里继承行为，我们称之为**原型式继承**（ prototypal inheritance）或**基于原型的继承**。   
+
+相比于经典面向对象语言，基于原型的语言更通用。   
+它们更灵活，效率更高，表达力更强。  
+
+## 构造函数：它能让我们重用代码，但效率如何呢
+```javascript
+function Dog(name, breed, weight) {
+  this.name = name;
+  this.breed = breed;
+  this.weight = weight;
+  this.bark = function() {
+    if (this.weight > 25) {
+      alert(this.name + " says Woof!");
+    } else {
+      alert(this.name + " says Yip!");
+    }
+  };
+}
+
+var fido = new Dog("Fido", "Mixed", 38);
+var fluffy = new Dog("Fluffy", "Poodle", 30);
+var spot = new Dog("Spot", "Chihuahua", 10);
+```
+这些代码创建三个小狗对象。  
+![](../img/2018-10-08_185454.png)
+
+重复的方法:   
+一般而言，我们不希望每次使用构造函数实例化一个对象时，都创建一组新的方法。  
+这样会影响应用程序的性能，占用计算机资源。
+这可能是个大问题，在移动设备上尤其如此。
+
+
+## 对象图
+![](../img/2018-10-08_184815-对象图.png)  
+
+## 原型
+JavaScript对象可从其他对象那里继承属性和行为。   
+JavaScript使用原型式继承，其中其行为被继承的对象称为**原型**  
+这旨在继承既有属性（包括方法），同时在新对象中添加属性。   
+![](../img/2018-10-09_163429-原型.png)   
+
+## 继承原型:  
+![](../img/2018-10-09_172052.png)  
+
+## 继承工作原理
+对对象调用方法时，如果在对象中找不到，将在原型中查找它。  
+![](../img/2018-10-09_173419.png)  
+我们实现了代码重用：不仅只需在一个地方编写代码，而且让所有小狗实例都在运行阶段使用同一个bark方法，从而避免了庞大的运行阶段开销。   
+
+## 重写原型
+继承原型并不意味着必须与它完全相同。     
+在任何情况下，都可重写原型的属性和方法，只需在对象实例中提供它们即可。
+这之所以可行，是因为JavaScript总是先在对象实例（即具体的小狗对象）中查找属性；如果找不到，再在原型中查找。   
+![](../img/2018-10-09_181928.png) 
+
+## 构造函数的`prototype`属性
+**prototype属性：**    
+构造函数的属性；   
+指向原型的引用。   
+
+在代码中访问这个原型：
+```javascript
+Dog.prototype
+```
+
+在JavaScript中，函数也是对象。   
+实际上，在JavaScript中，几乎所有的东西都是对象。  
+除了具备你知道的各种功能外，函数还可以有属性，   
+而构造函数都包含属性prototype。
+
+## 设置原型
+```javascript
+//方法来自原型， 因此不需要在构造函数中定义它们。
+function Dog(name, breed, weight) {
+  this.name = name;
+  this.breed = breed;
+  this.weight = weight;
+}
+
+//创建构造函数后，便可以设置小狗原型了
+Dog.prototype.species = "Canine";
+Dog.prototype.bark = function() {
+  if (this.weight > 25) {
+    console.log(this.name + " says Woof!");
+  } else {
+    console.log(this.name + " says Yip!");
+  }
+};
+Dog.prototype.run = function() {
+  console.log("Run!");
+};
+Dog.prototype.wag = function() {
+  console.log("Wag!");
+};
+
+//创建小狗对象
+var fido = new Dog("Fido", "Mixed", 38);
+var fluffy = new Dog("Fluffy", "Poodle", 30);
+var spot = new Dog("Spot", "Chihuahua", 10);
+
+//对每个小狗对象调用方法
+//每个小狗对象都从原型那里继承了这些方法。
+fido.bark();
+fido.run();
+fido.wag();
+fluffy.bark();
+fluffy.run();
+fluffy.wag();
+spot.bark();
+spot.run();
+spot.wag();
+```
+
+## 重写原型，给Spot提供自定义方法bark   
+```javascript
+spot.bark = function() {
+  console.log(this.name + " says WOOF!");
+};
+```
+### 疑惑
+鉴于方法bark位于原型而不是对象中，其中的this.name怎么不会导致问题呢？  
+在没有使用原型的情况下，这很容易解释，因为this指的是方法被调用的对象。调用原型中的方法bark时，你可能认为this指的是原型对象，但情况并非如此。   
+调用对象的方法时，this 被设置为方法被调用的对象。
+即便在该对象中没有找到调用的方法，而是在原型中找到了它，也不会修改this的值。   
+在任何情况下，this都指向原始对象，即方法被调用的对象，即便该方法位于原型中亦如此。  
+
+## 让所有的小狗都学会新技能
+使用原型后，如果给原型添加一个方法，所有的小狗对象都将立即从原型那里继承这个方法并自动获得这种新行为，包括添加方法前已创建的小狗对象。
+
+![](../img/2018-10-10_100701.png)  
+
+
+## 原型是动态的
+给原型添加新的方法或属性后，继承该原型的所有对象实例都将立即继承它。  
+
+## 对初始值使用原型
+在方法sit中，判断小狗是否是坐着的。如果不是，就让它坐着；如果是，就告诉用户小狗已经是坐着的。
+```javascript
+//属性sitting，用于跟踪小狗是否是坐着的。
+Dog.prototype.sitting = false;
+Dog.prototype.sit = function() {
+  if (this.sitting) {
+    console.log(this.name + " is already sitting");
+  } else {
+    this.sitting = true;
+    console.log(this.name + " is now sitting");
+  }
+};
+```
+小狗实例刚创建时，从原型那里继承了属性sitting，该属性的值默认为false；  
+但调用方法sit后，就给小狗实例添加了属性sitting的值，导致在小狗实例中创建了属性sitting。   
+这让我们能够给所有小狗对象指定默认值，并在需要时对各个小狗进行定制。  
+每个小狗对象都独立地跟踪自己是否是坐着的。  
+
+## 属性sitting的工作原理
+首次获取sitting的值时，是从原型中获取的；  
+但接下来将sitting设置为true时，是在对象实例而不是原型中进行的。  
+在对象实例中添加这个属性后，接下来每次获取sitting的值时，都将从对象实例中获取，因为它重写了原型中的这个属性。   
+![](../img/2018-10-10_115534.png)  
+
+## hasOwnProperty——判断使用的属性包含在实例还是原型中
+如果属性是在对象实例中定义的，这个方法将返回true。   
+如果属性不是在对象实例中定义的，但能够访问它，就可认为它肯定是在原型中定义的。   
+```javascript
+spot.hasOwnProperty("sitting");  //首次检查spot是否有自己的sitting属性时，结果为false
+spot.sitting = true;  // 这将在实例spot中添加属性sitting
+spot.hasOwnProperty("sitting");  //spot现在有自己的sitting属性,结果为true
+```
+
+## 使用JavaScript时，可以有多个原型
+
+就像你得到的遗产。  
+可建立供对象继承的原型链。 
+
+假设你有一个小鸟原型，知道如何做大多数小鸟都会做的事情，如飞翔。
+现在假设你需要实现各种鸭子——绿头鸭、红头鸭等。
+但鸭子与一般的鸟不同。它们会游泳，我们不想将这个方法放在小鸟原型中。不过，在JavaScript中，可创建一个继承小鸟原型的鸭子原型。    
+
+假设你创建了一个鸭子对象，并对其调用了方法fly。
+如果在该对象中查找时，没有找到这个方法，你将如何做呢？   
+你接着在鸭子原型中查找，可这里也没有方法fly。   
+因此，你继续在鸭子原型继承的小鸟原型中查找，并在这里找到了方法fly。
+
+我们不仅重用了鸭子原型的行为，必要时还可沿原型链往上走，进而使用小鸟原型的行为。   
+
+## 建立原型链
+对象不仅可以继承一个原型的属性，还可继承一个原型链。
+
+![](../img/2018-10-11_100223.png)  
+
+## 原型链中的继承原理
+![](../img/2018-10-11_100455.png)  
+
+## 创建表演犬原型
+我们需要一个继承另一个原型（小狗原型）的原型对象。
+
+![](../img/2018-10-11_100921.png)  
+
+1. 需要一个继承小狗原型的对象
+```javascript
+var aDog = new Dog();  
+```
+
+这里没有给构造函数提供任何实参,因为我们只需要一个继承小狗原型的小狗对象，而不关心其细节。   
+
+![](../img/2018-10-11_101156.png)
+
+2. 将新建的小狗实例变成表演犬原型
+```javascript
+function ShowDog(name, breed, weight, handler) {
+  this.name = name;
+  this.breed = breed;
+  this.weight = weight;
+  this.handler = handler;
+}
+
+//将其属性prototype设置为一个新的小狗实例
+ShowDog.prototype = new Dog();
+
+//给表演犬添加的属性和方法
+//获取充当表演犬原型的小狗实例，并给它添加新的属性和方法。
+Showdog.prototype.league = "Webville";
+ShowDog.prototype.stack = function() {
+  console.log("Stack");
+};
+ShowDog.prototype.bait = function() {
+  console.log("Bait");
+};
+ShowDog.prototype.gait = function(kind) {
+  console.log(kind + "ing");
+};
+ShowDog.prototype.groom = function() {
+  console.log("Groom");
+};
+
+//创建表演犬实例
+var scotty = new ShowDog("Scotty", "Scottish Terrier", 15, "Cookie");
+```
+
+表演犬原型“ 扩展” 了小狗原型。  
+它继承了小狗原型的属性，并添加了一些新属性。
+
+
+## `instanceof`  && `constructor`
+```javascript
+var fido = new Dog("Fido", "Mixed", 38);
+if (fido instanceof Dog) {
+  console.log("Fido is a Dog");
+}
+if (fido instanceof ShowDog) {
+  console.log("Fido is a ShowDog");
+}
+var scotty = new ShowDog("Scotty", "Scottish Terrier", 15, "Cookie");
+if (scotty instanceof Dog) {
+  console.log("Scotty is a Dog");
+}
+if (scotty instanceof ShowDog) {
+  console.log("Scotty is a ShowDog");
+}
+console.log("Fido constructor is " + fido.constructor);
+console.log("Scotty constructor is " + scotty.constructor);
+```
+结果：   
+```console
+Fido is a Dog
+Scotty is a Dog
+Scotty is a ShowDog
+Fido constructor is function Dog...
+Scotty constructor is function Dog..
+```
+instanceof不仅考虑当前对象的类型，还考虑它继承的所有对象。 Scotty虽然是作为表演犬创建的，但表演犬继承了小狗，因此Scotty也是小狗。  
+
+Scotty的构造函数也是Dog。  
+这不合理，因为它是使用构造函数ShowDog创建的。  
+
+查看属性scotty.constructor。由于我们没有显式地为表演犬设置这个属性，它将从小狗原型那里继承该属性。  
+
+虽然代码都没问题，但给对象设置正确的构造函数是一种最佳实践，以免有一天另一位开发人员接手这些代码并查看表演犬对象的情况时感到迷惑。 
+
+这是一个需要修复的漏洞。
+```javascript
+ShowDog.prototype = new Dog();
+ShowDog.prototype.constructor = ShowDog;
+```
+
+## call
+构造函数Dog也包含这些代码:  
+```javascript
+function ShowDog(name, breed, weight, handler) {
+this.name = name;
+this.breed = breed;
+this.weight = weight;
+this.handler = handler;
+}
+```
+每当我们发现重复的代码时，警报就会大响。
+
+就这里而言，既然构造函数Dog已经知道如何完成这些工作，为何不让它去做呢？  
+另外，虽然这个示例的代码很简单，但有些构造函数可能使用复杂的代码来计算属性的初始值。  
+因此创建继承另一个原型的构造函数时，都不应重复既有的代码  
+
+重写代码:  
+```javascript
+function ShowDog(name, breed, weight, handler) {
+  Dog.call(this, name, breed, weight); //重用构造函数Dog中处理属性name、 breed和weight的代码
+  this.handler = handler; //这里依然需要处理属性handler， 因为构造函数Dog对这个属性一无所知
+}
+```
+### 原理
+`call`是一个内置方法,可对任何函数调用它（Dog是一个函数）。   
+Dog.call调用函数Dog，将一个用作this的对象以及函数Dog的所有实参传递给它。  
+![](../img/2018-10-11_10115611.png)  
+
+### Dog.call详解
+![](../img/2018-10-11_10115612.png)
+
+构造函数Dog执行完毕后（别忘了，我们调用它时没有使用运算符new，因此它不会返回任何对象），接着执行ShowDog中的其他代码，将形参handler的值赋给属性this.handler。  
+接下来，因为我们调用ShowDog时使用了运算符new，所以将返回一个设置了属性name、 breed、 weight和handler的ShowDog实例。   
+
+### 原型链的终点`Object`
+你创建的每个原型链的终点都是Object。  
+因为对于你创建的任何实例，其默认原型都是Object，除非你对其进行了修改。
+
+可将Object视为对象始祖，所有对象都是从它派生而来的。    Object实现了多个重要的方法，是JavaScript对象系统的核心部分：
+1. 方法hasOwnProperty——用来确定属性是在对象实例还是其原型中定义的。  
+2. 方法toString——这个方法返回对象的字符串表示。  
+
+你创建的每个对象都有原型，该原型默认为Object。你可将对象的原型设置为其他对象，就像我们对表演犬原型所做的那样，但所有原型链的终点都是Object。  
+## 继承的威力之重写内置行为
+重写方法toString
+```javascript
+function Robot(name, year, owner) {
+  this.name = name;
+  this.year = year;
+  this.owner = owner;
+}
+var toy = new Robot("Toy", 2013, "Avary");
+console.log(toy.toString());
+```
+结果：[Object object]    
+
+在将机器人对象toy转换为字符串方面，方法toString做得并不好。   
+可重写方法toString，让其为机器人对象创建独特的字符串：  
+```javascript
+function Robot(name, year, owner) {
+  // 相同的代码
+}
+Robot.prototype.toString = function() {
+  return this.name + " Robot belonging to " + this.owner;
+};
+
+var toy = new Robot("Toy", 2013, "Avary");
+console.log(toy.toString());
+```
+结果：Toy Robot belonging to Avary  
+
+有些情况下，会自动调用方法toString。   
+如，如果你使用`运算符`+`来拼接字符串和对象`，   
+JavaScript将自动调用方法toString将对象转换为字符串，  
+再将该字符串与另一个字符串拼接起来。
+```javascript
+console.log("Robot is: " + toy); //调用方法toString将对象toy转换为一个字符串，再进行拼接
+```
+### 重写内置对象的属性和方法时，要特别小心
+1. 千万不要重写Object的如下属性：
+* constructor  //个原型相关联的构造函数
+* hasOwnProperty  
+* isPrototypeOf  //用于判断一个对象是否是另一个对象的原型
+* propertyIsEnumerable  //用于判断通过迭代对象的所有属性是否可访问指定的属性
+
+2. 可以重写:
+熟悉原型并知道如何安全地重写属性后，就可以重写Object的如下属性了：
+* toString
+* toLocaleString  //类似于toString，也将对象转换为字符串 
+* valueOf  //默认情况下在返回当前对象
+
+### 继承的威力之扩展内置对象
+通过给原型添加方法，可给其所有实例添加新功能。   
+这不仅适用于自定义对象，还适用于内置对象。
+
+用一个名为cliche的方法扩展String原型。  
+这个方法会在字符串包含一个众所周知的俗语时返回true。
+```javascript
+String.prototype.cliche = function() {
+  var cliche = ["lock and load","touch base", "open the kimono"];
+  for (var i = 0; i < cliche.length; i++) {
+    var index = this.indexOf(cliche[i]);
+    if (index >= 0) {
+      return true;
+    }
+  }
+  return false;
+};
+```
+
+务必确保你为新方法选择的名称不与对象的既有方法发生冲突。
+有些内置对象是不能扩展的，如Array。 
+
+
+
+
+
+
